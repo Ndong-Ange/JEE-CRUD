@@ -1,44 +1,54 @@
 package nguema.ndong.ange.controller;
 
+import nguema.ndong.ange.model.Plane;
+import nguema.ndong.ange.service.PlaneService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import nguema.ndong.ange.model.Product;
-import nguema.ndong.ange.service.ProductService;
+@Controller
+@RequestMapping("/planes")
+public class PlaneController {
 
-import java.util.List;
-
-@RestController
-@RequestMapping("/api/products")
-public class ProductController {
-
-    private final ProductService productService;
-
-    public ProductController(ProductService productService) {
-        this.productService = productService;
-    }
+    @Autowired
+    private PlaneService planeService;
 
     @GetMapping
-    public List<Product> getAllProducts() {
-        return productService.getAllProducts();
+    public String listPlanes(Model model) {
+        model.addAttribute("planes", planeService.findAll());
+        return "planes/list";
     }
 
-    @GetMapping("/{id}")
-    public Product getProductById(@PathVariable Long id) {
-        return productService.getProductById(id);
+    @GetMapping("/add")
+    public String addPlaneForm(Model model) {
+        model.addAttribute("plane", new Plane());
+        return "planes/add";
     }
 
-    @PostMapping
-    public Product createProduct(@RequestBody Product product) {
-        return productService.createProduct(product);
+    @PostMapping("/add")
+    public String addPlane(@ModelAttribute Plane plane) {
+        planeService.save(plane);
+        return "redirect:/planes";
     }
 
-    @PutMapping("/{id}")
-    public Product updateProduct(@PathVariable Long id, @RequestBody Product productDetails) {
-        return productService.updateProduct(id, productDetails);
+    @GetMapping("/edit/{id}")
+    public String editPlaneForm(@PathVariable Long id, Model model) {
+        Plane plane = planeService.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid plane Id:" + id));
+        model.addAttribute("plane", plane);
+        return "planes/edit";
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable Long id) {
-        productService.deleteProduct(id);
+    @PostMapping("/edit/{id}")
+    public String editPlane(@PathVariable Long id, @ModelAttribute Plane plane) {
+        plane.setId(id);
+        planeService.save(plane);
+        return "redirect:/planes";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deletePlane(@PathVariable Long id) {
+        planeService.deleteById(id);
+        return "redirect:/planes";
     }
 }

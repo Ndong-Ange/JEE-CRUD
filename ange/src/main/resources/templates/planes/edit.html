@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Modifier un Avion</title>
+</head>
+<body>
+<h1>Modifier un Avion</h1>
+<form action="#" th:action="@{/planes/edit/{id}(id=${plane.id})}" th:object="${plane}" method="post">
+    <label>Model:</label>
+    <input type="text" th:field="*{model}" /><br>
+    <label>Brand:</label>
+    <input type="text" th:field="*{brand}" /><br>
+    <label>Release Date:</label>
+    <input type="date" th:field="*{releaseDate}" /><br>
+    <label>Status:</label>
+    <input type="text" th:field="*{status}" /><br>
+    <button type="submit">Modifier</button>
+</form>
+</body>
+</html>

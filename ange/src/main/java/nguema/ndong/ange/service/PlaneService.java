@@ -1,44 +1,32 @@
 package nguema.ndong.ange.service;
 
-import java.util.List;
-
+import nguema.ndong.ange.model.Plane;
+import nguema.ndong.ange.repository.PlaneRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import nguema.ndong.ange.model.Product;
-import nguema.ndong.ange.repository.ProductRepository;
+import java.util.List;
+import java.util.Optional;
 
 @Service
-public class ProductService {
+public class PlaneService {
 
-    private final ProductRepository productRepository;
+    @Autowired
+    private PlaneRepository planeRepository;
 
-    public ProductService(ProductRepository productRepository) {
-        this.productRepository = productRepository;
+    public List<Plane> findAll() {
+        return planeRepository.findAll();
     }
 
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public Optional<Plane> findById(Long id) {
+        return planeRepository.findById(id);
     }
 
-    public Product getProductById(Long id) {
-        return productRepository.findById(id).orElse(null);
+    public Plane save(Plane plane) {
+        return planeRepository.save(plane);
     }
 
-    public Product createProduct(Product product) {
-        return productRepository.save(product);
-    }
-
-    public Product updateProduct(Long id, Product productDetails) {
-        Product product = productRepository.findById(id).orElse(null);
-        if (product != null) {
-            product.setName(productDetails.getName());
-            product.setPrice(productDetails.getPrice());
-            return productRepository.save(product);
-        }
-        return null;
-    }
-
-    public void deleteProduct(Long id) {
-        productRepository.deleteById(id);
+    public void deleteById(Long id) {
+        planeRepository.deleteById(id);
     }
 }

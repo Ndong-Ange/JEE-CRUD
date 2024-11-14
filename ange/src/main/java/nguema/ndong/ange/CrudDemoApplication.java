@@ -4,9 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class crud_demo {
+public class CrudDemoApplication { // ou RentalAppApplication
 
     public static void main(String[] args) {
-        SpringApplication.run(crud_demo.class, args);
+        SpringApplication.run(CrudDemoApplication.class, args);
     }
 }

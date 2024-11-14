@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Liste des Avions</title>
+</head>
+<body>
+<h1>Avions</h1>
+<a th:href="@{/planes/add}">Ajouter un nouvel avion</a>
+<table>
+    <tr>
+        <th>Model</th>
+        <th>Brand</th>
+        <th>Release Date</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
+    <tr th:each="plane : ${planes}">
+        <td th:text="${plane.model}">Model</td>
+        <td th:text="${plane.brand}">Brand</td>
+        <td th:text="${plane.releaseDate}">Release Date</td>
+        <td th:text="${plane.status}">Status</td>
+        <td>
+            <a th:href="@{/planes/edit/{id}(id=${plane.id})}">Edit</a>
+            <a th:href="@{/planes/delete/{id}(id=${plane.id})}">Delete</a>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
