@@ -4,17 +4,33 @@
     <title>Modifier un Avion</title>
 </head>
 <body>
-<h1>Modifier un Avion</h1>
-<form action="#" th:action="@{/planes/edit/{id}(id=${plane.id})}" th:object="${plane}" method="post">
-    <label>Model:</label>
-    <input type="text" th:field="*{model}" /><br>
-    <label>Brand:</label>
-    <input type="text" th:field="*{brand}" /><br>
-    <label>Release Date:</label>
-    <input type="date" th:field="*{releaseDate}" /><br>
-    <label>Status:</label>
-    <input type="text" th:field="*{status}" /><br>
-    <button type="submit">Modifier</button>
+
+<h1>Modifier les détails de l'avion</h1>
+
+<form action="#" th:action="@{/planes/edit/{id}(id=${plane.id})}" method="post">
+    <div>
+        <label for="model">Modèle</label>
+        <input type="text" id="model" name="model" th:value="${plane.model}" />
+    </div>
+    <div>
+        <label for="brand">Marque</label>
+        <input type="text" id="brand" name="brand" th:value="${plane.brand}" />
+    </div>
+    <div>
+        <label for="releaseDate">Date de sortie</label>
+        <input type="date" id="releaseDate" name="releaseDate" th:value="${plane.releaseDate}" />
+    </div>
+    <div>
+        <label for="status">Statut</label>
+        <select id="status" name="status" th:value="${plane.status}">
+            <option value="available">Disponible</option>
+            <option value="borrowed">Emprunté</option>
+        </select>
+    </div>
+    <div>
+        <button type="submit">Mettre à jour</button>
+    </div>
 </form>
+
 </body>
 </html>

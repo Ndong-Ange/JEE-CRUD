@@ -14,41 +14,31 @@ public class PlaneController {
     @Autowired
     private PlaneService planeService;
 
-    @GetMapping
-    public String listPlanes(Model model) {
-        model.addAttribute("planes", planeService.findAll());
-        return "planes/list";
-    }
-
-    @GetMapping("/add")
-    public String addPlaneForm(Model model) {
-        model.addAttribute("plane", new Plane());
-        return "planes/add";
-    }
-
-    @PostMapping("/add")
-    public String addPlane(@ModelAttribute Plane plane) {
-        planeService.save(plane);
-        return "redirect:/planes";
-    }
-
+    // Afficher le formulaire d'édition avec les données actuelles
     @GetMapping("/edit/{id}")
-    public String editPlaneForm(@PathVariable Long id, Model model) {
-        Plane plane = planeService.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid plane Id:" + id));
+    public String showEditForm(@PathVariable("id") Long id, Model model) {
+        Plane plane = planeService.findById(id).orElse(null);
+        if (plane == null) {
+            model.addAttribute("error", "Avion non trouvé");
+            return "planes/error";
+        }
         model.addAttribute("plane", plane);
         return "planes/edit";
     }
 
+    // Modifier l'avion avec les nouvelles données via POST ou PUT
     @PostMapping("/edit/{id}")
-    public String editPlane(@PathVariable Long id, @ModelAttribute Plane plane) {
-        plane.setId(id);
-        planeService.save(plane);
+    public String editPlane(@PathVariable("id") Long id, @ModelAttribute Plane plane) {
+        Plane existingPlane = planeService.findById(id).orElse(null);
+        if (existingPlane != null) {
+            existingPlane.setModel(plane.getModel());
+            existingPlane.setBrand(plane.getBrand());
+            existingPlane.setReleaseDate(plane.getReleaseDate());
+            existingPlane.setStatus(plane.getStatus());
+            planeService.save(existingPlane);
+        }
         return "redirect:/planes";
     }
 
-    @GetMapping("/delete/{id}")
-    public String deletePlane(@PathVariable Long id) {
-        planeService.deleteById(id);
-        return "redirect:/planes";
-    }
+    // Autres méthodes (ajouter, lister, supprimer un avion)...
 }
